@@ -1,0 +1,10 @@
+root: ./docs/
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+redirects:
+  overview: README.md
+  protocol: mechanics/tour.md
+  whitepaper: README.md
