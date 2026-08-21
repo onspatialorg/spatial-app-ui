@@ -1,0 +1,676 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /*
+   * Two sans families. Bricolage Grotesque, tightly tracked, carries display
+   * text (h1, h2, the wordmark, the big figures). Geist carries everything
+   * else, and every number is set in it with tabular figures.
+   */
+  --font-sans: var(--font-geist), "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-bricolage), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: var(--font-geist), "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist), "Geist", "Helvetica Neue", Arial, sans-serif;
+
+  /*
+   * Spatial palette, taken from the glass sphere. One accent, lagoon (the
+   * deep teal at the sphere's core), used at five intensities. Aqua, mint and
+   * ice appear only in atmosphere: washes, the hero sky, the CTA panel.
+   * Grounds are cool and bright. Amber, leaf and rose are semantic only.
+   */
+  --color-canvas: #f4f9fa;
+  --color-white: #ffffff;
+  --color-haze: #edf5f7;
+  --color-haze-2: #e2eef1;
+  --color-line: #dbe8eb;
+  --color-line-soft: rgb(219 232 235 / 0.65);
+
+  --color-navy: #0b2530;
+  --color-tide: #46626b;
+  --color-fog: #87a0a8;
+  --color-pale: #b7cacf;
+
+  --color-lagoon: #0a8782;
+  --color-lagoon-deep: #076b67;
+  --color-lagoon-muted: rgb(10 135 130 / 0.4);
+  --color-lagoon-soft: rgb(10 135 130 / 0.1);
+  --color-lagoon-faint: rgb(10 135 130 / 0.05);
+  --color-lagoon-line: rgb(10 135 130 / 0.16);
+
+  --color-aqua: #14b7ad;
+  --color-mint: #96e0de;
+  --color-ice: #dbf0fa;
+  --color-sky: #0f84b4;
+
+  --color-amber: #e3922f;
+  --color-amber-deep: #a95f12;
+  --color-amber-soft: rgb(227 146 47 / 0.13);
+
+  --color-leaf: #2e9d5f;
+  --color-leaf-deep: #1d7a45;
+  --color-leaf-soft: rgb(46 157 95 / 0.12);
+
+  --color-rose: #dc4f5a;
+  --color-rose-deep: #b6343f;
+  --color-rose-soft: rgb(220 79 90 / 0.1);
+
+  /* shadcn tokens */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --animate-reveal: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fill: fill 2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-float-slow: float 14s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 60s linear infinite;
+}
+
+:root {
+  --background: #f4f9fa;
+  --foreground: #0b2530;
+  --card: #ffffff;
+  --card-foreground: #0b2530;
+  --popover: #ffffff;
+  --popover-foreground: #0b2530;
+  --primary: #0a8782;
+  --primary-foreground: #ffffff;
+  --secondary: #edf5f7;
+  --secondary-foreground: #0b2530;
+  --muted: #edf5f7;
+  --muted-foreground: #46626b;
+  --accent: #edf5f7;
+  --accent-foreground: #0b2530;
+  --destructive: #dc4f5a;
+  --border: #dbe8eb;
+  --input: #dbe8eb;
+  --ring: rgb(10 135 130 / 0.35);
+  --radius: 0.75rem;
+
+  /* The accent's glow, for the primary call to action only */
+  --accent-glow: 0 10px 30px -6px rgb(10 135 130 / 0.38);
+  /* Depth: a hairline lift plus one long, very soft shadow */
+  --lift: 0 1px 2px rgb(11 37 48 / 0.04), 0 18px 40px -22px rgb(11 37 48 / 0.16);
+  --lift-hover: 0 1px 2px rgb(11 37 48 / 0.05), 0 28px 56px -24px rgb(11 37 48 / 0.24);
+  /* Grain, a fine fractal noise laid over washes of colour */
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: clip;
+    font-size: 15px;
+    line-height: 1.65;
+    background-color: var(--color-canvas);
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: rgb(20 183 173 / 0.2);
+    color: #0b2530;
+  }
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="checkbox"],
+  input[type="radio"],
+  select,
+  summary,
+  a[href],
+  .btn {
+    cursor: pointer;
+  }
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  .btn:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+  /* Display text is the grotesque at 600, tightly tracked; smaller headings are the sans at 600 */
+  h1, h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: var(--color-navy);
+  }
+  h3, h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--color-navy);
+  }
+  strong {
+    font-weight: 600;
+  }
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+  }
+}
+
+@layer components {
+  /* Layout */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+  }
+
+  /* Numbers, addresses and hashes: the sans with tabular figures */
+  .font-mono,
+  .readout {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /*
+   * Aurora: soft washes of aqua and ice drifting behind a section, with a layer
+   * of grain to give them body. Never more than these two hues.
+   */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .aurora::before,
+  .aurora::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(80px);
+    will-change: transform;
+  }
+
+  .aurora::before {
+    width: 56vw;
+    height: 56vw;
+    max-width: 760px;
+    max-height: 760px;
+    right: -12vw;
+    top: -20vw;
+    background: radial-gradient(circle at 40% 40%, rgb(150 224 222 / 0.55), rgb(219 240 250 / 0.35) 45%, rgb(255 255 255 / 0) 72%);
+    animation: float-slow 16s ease-in-out infinite;
+  }
+
+  .aurora::after {
+    width: 42vw;
+    height: 42vw;
+    max-width: 600px;
+    max-height: 600px;
+    left: -14vw;
+    bottom: -22vw;
+    background: radial-gradient(circle at 60% 60%, rgb(219 240 250 / 0.9), rgb(255 255 255 / 0) 70%);
+    animation: float 13s ease-in-out infinite;
+  }
+
+  .aurora-faint::before,
+  .aurora-faint::after {
+    opacity: 0.6;
+  }
+
+  /* Grain overlay, laid over any wash of colour */
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: var(--grain);
+    mix-blend-mode: multiply;
+  }
+
+  /* A quiet dot grid that fades out toward the edges */
+  .dotgrid {
+    background-image: radial-gradient(rgb(70 98 107 / 0.13) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, #000 15%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, #000 15%, transparent 100%);
+  }
+
+  /* The hero sky: the photograph, a veil that keeps white text legible, grain */
+  .sky-veil {
+    background:
+      linear-gradient(180deg, rgb(3 70 100 / 0.42) 0%, rgb(3 70 100 / 0.12) 42%, rgb(255 255 255 / 0) 64%),
+      radial-gradient(ellipse 70% 50% at 50% 30%, rgb(3 60 90 / 0.18), transparent 70%);
+  }
+
+  /* Cards: white, 24 px, lifted by one long and very soft shadow */
+  .card {
+    position: relative;
+    border-radius: 24px;
+    border: 1px solid var(--color-line);
+    background: var(--color-white);
+    box-shadow: var(--lift);
+  }
+
+  .card-tint {
+    background: var(--color-haze);
+    border-color: var(--color-line-soft);
+    box-shadow: none;
+  }
+
+  .card-hover {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .card-hover:hover {
+    border-color: var(--color-lagoon-line);
+    box-shadow: var(--lift-hover);
+    transform: translateY(-3px);
+  }
+
+  .card-accent {
+    border-color: var(--color-lagoon-line);
+    box-shadow:
+      var(--lift),
+      0 0 0 5px var(--color-lagoon-faint);
+  }
+
+  /* A nested block one step below the card it sits in */
+  .surface {
+    border-radius: 16px;
+    border: 1px solid var(--color-line-soft);
+    background: var(--color-haze);
+  }
+
+  /* Frosted glass, for bars and chips that float over content or the sky */
+  .glass {
+    background: rgb(255 255 255 / 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid rgb(255 255 255 / 0.75);
+    box-shadow: 0 10px 40px -20px rgb(11 37 48 / 0.3);
+  }
+
+  /* Glass on the sky itself: a lighter, clearer pane for chips over the photograph */
+  .glass-sky {
+    background: rgb(255 255 255 / 0.16);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border: 1px solid rgb(255 255 255 / 0.35);
+    color: #fff;
+  }
+
+  /* An accented phrase inside display text: the sphere's teal running into aqua */
+  .accent-word {
+    background: linear-gradient(100deg, #0a8782 0%, #14b7ad 55%, #3fa9d6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .accent-bar {
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #0a8782, #14b7ad 60%, #96e0de);
+  }
+
+  /* Overline: a pill label above a heading */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: var(--color-lagoon-deep);
+  }
+
+  .eyebrow-pill {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 7px 12px 7px 10px;
+    border-radius: 999px;
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    box-shadow: 0 1px 2px rgb(11 37 48 / 0.04);
+  }
+
+  .eyebrow-plain::before {
+    display: none;
+  }
+
+  .eyebrow-muted {
+    color: var(--color-fog);
+  }
+
+  .eyebrow-muted::before {
+    background: var(--color-pale);
+    box-shadow: none;
+  }
+
+  /* Small caps-style caption used for table heads and figure labels */
+  .caption {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-fog);
+  }
+
+  /* Section index: a quiet counter */
+  .index {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-pale);
+  }
+
+  /* Live indicator */
+  .live-dot {
+    position: relative;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-leaf);
+    box-shadow: 0 0 0 3px rgb(46 157 95 / 0.18);
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+
+  /* The soft shadow reserved for the mark */
+  .mark-glow {
+    filter: drop-shadow(0 18px 36px rgb(10 135 130 / 0.28));
+  }
+
+  /* Icon tile: an icon inside a soft teal square */
+  .icon-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    color: var(--color-lagoon);
+    background: linear-gradient(160deg, rgb(150 224 222 / 0.35), rgb(219 240 250 / 0.6));
+    border: 1px solid rgb(10 135 130 / 0.12);
+  }
+
+  /* Buttons: the sans at 600, sentence case, pill shaped; the primary carries the glow */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition:
+      background-color 0.22s ease,
+      border-color 0.22s ease,
+      color 0.22s ease,
+      box-shadow 0.22s ease,
+      transform 0.22s ease;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--color-lagoon);
+    outline-offset: 3px;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary {
+    color: #fff;
+    background: linear-gradient(180deg, #0f948e, #0a8782);
+    border-color: #0a8782;
+    box-shadow: var(--accent-glow), inset 0 1px 0 rgb(255 255 255 / 0.18);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-lagoon-deep);
+    border-color: var(--color-lagoon-deep);
+    box-shadow: 0 14px 34px -8px rgb(10 135 130 / 0.5);
+  }
+
+  .btn-secondary {
+    color: var(--color-navy);
+    background: var(--color-white);
+    border-color: var(--color-line);
+    box-shadow: 0 1px 2px rgb(11 37 48 / 0.05);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-lagoon-muted);
+    color: var(--color-lagoon-deep);
+  }
+
+  /* On the sky: a solid white button and a clear glass one */
+  .btn-light {
+    color: var(--color-navy);
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 14px 34px -12px rgb(3 60 90 / 0.55);
+  }
+
+  .btn-light:hover {
+    background: var(--color-ice);
+    border-color: var(--color-ice);
+  }
+
+  .btn-clear {
+    color: #fff;
+    background: rgb(255 255 255 / 0.14);
+    border-color: rgb(255 255 255 / 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .btn-clear:hover {
+    background: rgb(255 255 255 / 0.24);
+  }
+
+  .btn-ghost {
+    color: var(--color-tide);
+    background: transparent;
+  }
+
+  .btn-ghost:hover {
+    color: var(--color-lagoon-deep);
+    background: var(--color-haze);
+  }
+
+  .btn-danger {
+    color: var(--color-rose-deep);
+    background: var(--color-rose-soft);
+    border-color: rgb(220 79 90 / 0.25);
+  }
+
+  .btn-danger:hover {
+    background: var(--color-rose);
+    border-color: var(--color-rose);
+    color: #fff;
+  }
+
+  .btn-sm {
+    padding: 9px 15px;
+    font-size: 13px;
+  }
+
+  .btn-lg {
+    padding: 16px 26px;
+    font-size: 15px;
+  }
+
+  /* Inputs */
+  .input {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-white);
+    padding: 11px 14px;
+    font-size: 14.5px;
+    color: var(--color-navy);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .input::placeholder {
+    color: var(--color-pale);
+  }
+
+  .input:focus {
+    border-color: var(--color-lagoon);
+    box-shadow: 0 0 0 4px var(--color-lagoon-soft);
+  }
+
+  .input:disabled,
+  .input[readonly] {
+    background: var(--color-haze);
+    color: var(--color-tide);
+  }
+
+  /* Hide scrollbars on horizontal rails */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* A hairline rule that fades at both ends */
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-line) 12%, var(--color-line) 88%, transparent);
+  }
+
+  /* Tables */
+  .ledger th {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .ledger td {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+
+  .ledger tbody tr:last-child > td {
+    border-bottom: 0;
+  }
+
+  .ledger tbody tr:hover > td {
+    background: var(--color-lagoon-faint);
+  }
+}
+
+/* Animations */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-24px, 18px, 0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.32s; }
+.delay-4 { animation-delay: 0.44s; }
+.delay-5 { animation-delay: 0.56s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
