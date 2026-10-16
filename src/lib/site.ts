@@ -9,7 +9,7 @@ export const SITE = {
   docsUrl: "https://docs.onspatial.org",
   contactEmail: "hello@onspatial.org",
   chainId: 4663,
-  tokenAddress: "",
+  tokenAddress: "0xcf9aaca9b71b383046b01090c88317e593e032f3",
   appHref: "/platform",
 } as const;
 
